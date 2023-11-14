@@ -6,13 +6,6 @@ import (
 	"strings"
 )
 
-type CommandType int
-
-const (
-	CLONE CommandType = iota
-	PULL
-)
-
 // GetRepoName gets repo name from given url with basic url check.
 // When executing shell commands, git will do more checks.
 func GetRepoName(url string) (string, error) {

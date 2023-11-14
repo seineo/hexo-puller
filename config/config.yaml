@@ -1,2 +1,3 @@
-url: git@github.com:seineo/blog.git
-path: /Users/liyuewei/Desktop
+tls:
+  crt: /etc/nginx/cert/seineo.cn_bundle.crt
+  key: /etc/nginx/cert/seineo.key

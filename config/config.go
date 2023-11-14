@@ -1,17 +1,22 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
 	"log"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 var CONFIG_PATH = "config/config.yaml"
 var Conf *Config
 
+type TLS struct {
+	Crt string `yaml:"crt"`
+	Key string `yaml:"key"`
+}
+
 type Config struct {
-	Url  string `yaml:"url"`
-	Path string `yaml:"path"`
+	Tls TLS
 }
 
 func newConfig(path string) *Config {

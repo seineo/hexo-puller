@@ -1,45 +1,55 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"hexo-puller/config"
 	"log"
-	"path"
+	"net/http"
 )
 
+type TaskInfo struct {
+	RepoUrl   string `json:"repoUrl"`
+	TargetDir string `json:"targetDir"`
+}
+
+func updateRepo(w http.ResponseWriter, r *http.Request) {
+	log.Println("got update request")
+
+	// get repo path and target dir from requests
+	decoder := json.NewDecoder(r.Body)
+	var t TaskInfo
+	err := decoder.Decode(&t)
+	if err != nil {
+		log.Printf("requst body is invalid: %v\n", err.Error())
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
+	// update repo
+	log.Println("------ start to update repository ------")
+	err = UpdateRepo(t.RepoUrl, t.TargetDir)
+	if err != nil {
+		log.Printf("failed to update repo: %v\n", err.Error())
+		return
+	}
+	log.Println("------ repository successfully updated ------")
+}
+
+// just for test
+func HelloServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello!\n")
+}
+
 func main() {
-	conf := config.GetConfig()
-	log.Printf("url: %v\npath: %v\n", conf.Url, conf.Path)
-	// check whether repo directory exists
-	repoName, err := GetRepoName(conf.Url)
+	config := config.GetConfig()
+
+	http.HandleFunc("/", updateRepo)
+	http.HandleFunc("/hello", HelloServer)
+
+	port := ":33333"
+	log.Printf("server starts, listening at port%v\n", port)
+	err := http.ListenAndServeTLS(port, config.Tls.Crt, config.Tls.Key, nil)
 	if err != nil {
-		log.Fatalf("failed to get repo name, error: %v\n", err.Error())
-	}
-	log.Printf("repo name is %v\n", repoName)
-	// check parent folder first
-	exists, err := FolderExists(conf.Path)
-	if err != nil {
-		log.Fatalf("given path is not valid, error: %v\n", err.Error())
-	}
-	if !exists {
-		log.Fatalf("given path not exists")
-	}
-	// check repo directory
-	repoLocal := path.Join(conf.Path, repoName)
-	exists, err = FolderExists(repoLocal)
-	if err != nil {
-		log.Fatalf("local repo path is not valid, error: %v\n", err.Error())
-	}
-	if !exists {
-		log.Printf("Local repo does not exist, trying to clone repo from remote....\n")
-		err = ExecuteCommand(conf.Path, "git", "clone", conf.Url)
-		if err != nil {
-			log.Printf("git clone error: %v\n", err.Error())
-		}
-	} else {
-		log.Printf("Local repo exists, trying to pull repo from remote....\n")
-		err = ExecuteCommand(repoLocal, "git", "pull", conf.Url)
-		if err != nil {
-			log.Printf("git pull error: %v\n", err.Error())
-		}
+		log.Fatalf("server errror: %v\n", err.Error())
 	}
 }
