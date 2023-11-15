@@ -22,8 +22,8 @@ git clone https://github.com/seineo/hexo-puller.git
 
 ```yaml
 tls:
-	crt: xxx
-	key: xxx
+  crt: xxx
+  key: xxx
 ```
 
 3. Compile and run hex puller(recommended in the background or as a daemon process):
