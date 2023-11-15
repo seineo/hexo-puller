@@ -1,6 +1,6 @@
 # Hexo Puller
 
-<img align="right" width="159px" src="https://oss.seineo.cn/images/202311151217169.png">
+<img align="right" width="159px" src="https://oss.seineo.cn/images/202311151624249.png">
 
 Hexo Puller is a simple git repository synchronization tool that provides a one-time solution for private cloud servers to synchronize hexo blogs.
 
@@ -9,6 +9,10 @@ Compared to existing methods like `hexo-deployer-git` and `rsync`, Hexo Puller h
 - Requires configuration only once.
 - Can synchronize blog markdown source files and theme configurations.
 - No additional commands are necessary apart from pushing the blog to GitHub.
+
+
+
+
 
 ## Getting Started
 
@@ -84,6 +88,6 @@ Afterward, each push operation to the blog repository will prompt the server to 
 
 ## How does Hexo Puller work？
 
-![截屏2023-11-15 12.04.33](https://oss.seineo.cn/images/202311151521389.png)
+![截屏2023-11-15 16.26.43](https://oss.seineo.cn/images/202311151626017.png)
 
 The workflow of Hexo puller is straightforward. When a user pushes their local blog to the remote GitHub repository, it triggers a GitHub Action. This action sends an HTTP POST request to the Hexo Puller deployed on the server, carrying JSON-formatted data. Upon receiving the request, Hexo Puller, based on the repository address and target path provided in the data, will either clone or pull the repository to the specified local target path.
