@@ -54,7 +54,10 @@ server {
 }
 ```
 
-4. Set up a GitHub Action for your blog repository. Just modify `{{YOUR_REPO_URL}}` (the blog repository address) and `{{YOUR_TARGET_FOLDER}}` (the parent directory path where the blog will be placed) within the data posted via a curl command in the YAML file:
+4. Set up a GitHub Action for your blog repository. There are only three things that need to be changed in the YAML file:
+   1. `{{YOUR_SERVER}}`: your server IP or domain name;
+   2. `{{YOUR_REPO_URL}}`: the address of your blog repository;
+   3. `{{YOUR_TARGET_FOLDER}}`: the path to the local directory where your blog will be placed.
 
 ```yaml
 name: Hexo Pull Notifier
@@ -66,7 +69,7 @@ jobs:
     steps:
       - name: Post data to backend server.
         run: >
-          status_code=$(curl -s -o /dev/null -w "%{http_code}" https://seineo.cn/hexo-puller --header 'Content-Type: application/json' --data '{"repoUrl": "{{YOUR_REPO_URL}}", "targetDir":"{{YOUR_TARGET_FOLDER}}"}');
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" https://{{YOUR_SERVER}}/hexo-puller --header 'Content-Type: application/json' --data '{"repoUrl": "{{YOUR_REPO_URL}}", "targetDir":"{{YOUR_TARGET_FOLDER}}"}');
 
           if [ "$status_code" -ne "200" ]; then
             echo "Error: status code is ${status_code}"
