@@ -16,7 +16,7 @@ Compared to existing methods like `hexo-deployer-git` and `rsync`, Hexo Puller h
 
 ## Getting Started
 
-1. Clone hexo puller:
+1. Clone hexo puller on your cloud server:
 
 ```shell
 git clone https://github.com/seineo/hexo-puller.git
@@ -58,7 +58,7 @@ server {
 }
 ```
 
-4. Set up a GitHub Action for your blog repository. There are only three things that need to be changed in the YAML file:
+4. Set up a [GitHub Action](https://docs.github.com/en/actions/quickstart) for your blog repository. There are only three things that need to be changed in the YAML file:
    1. `{{YOUR_SERVER}}`: your server IP or domain name;
    2. `{{YOUR_REPO_URL}}`: the address of your blog repository;
    3. `{{YOUR_TARGET_FOLDER}}`: the path to the local directory where your blog will be placed.
